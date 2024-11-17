@@ -1,0 +1,30 @@
+version: "3"
+services:
+  prometheus:
+    image: bitnami/prometheus:2.55.1-debian-12-r2
+    volumes:
+      - "./prometheus:/etc/prometheus"
+    networks:
+      - localprom
+    ports:
+      - 9090:9090
+  alertmanager:
+    image: bitnami/alertmanager:0.27.0-debian-12-r26
+    volumes:
+      - "./alertmanager/conf:/opt/bitnami/alertmanager/conf"
+    networks:
+      - localprom
+    ports:
+      - 9093:9093
+  local-exporter:
+    build: local-exporter
+    networks:
+      - localprom
+    ports:
+      - 8000:8000
+    environment:
+      - sleep_interval=${sleep_interval}
+      - always_allert=${always_allert}
+networks:
+  localprom:
+    driver: bridge

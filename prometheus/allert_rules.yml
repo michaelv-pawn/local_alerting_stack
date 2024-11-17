@@ -1,0 +1,17 @@
+groups:
+- name: SingleTenantDatabasesAllerts
+  rules:
+  - alert: HighCPUUtilisation
+    expr: cpu_usage > 80
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "[{{ $labels.db_pod }}] - High CPU Usage. Severity - critical"
+  - alert: HighMEMtilisation
+    expr: mem_usage > 80
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "[{{ $labels.db_pod }}] - High MEM Usage. Severity - critical"

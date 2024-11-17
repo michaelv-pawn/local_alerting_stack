@@ -1,0 +1,22 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: [ 'alertname' ]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: stardata-telegram
+
+receivers:
+- name: 'null_receiver'
+  email_configs: []
+- name: 'stardata-telegram'
+  telegram_configs:
+  - bot_token: "7546702272:AAHpMtCfB8WNmeoayYBaoRZgPAG9m2BAF4o"
+    api_url: https://api.telegram.org
+    chat_id: -1002404898299
+    parse_mode: ''
+    http_config:
+      tls_config:
+        insecure_skip_verify: true
