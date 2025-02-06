@@ -3,17 +3,33 @@ global:
 
 route:
   group_by: [ 'alertname' ]
-  group_wait: 30s
+  group_wait: 10s
   group_interval: 5m
   repeat_interval: 4h
-  receiver: stardata-telegram
+  receiver: null_receiver
+  routes:
+  - match:
+      severity: critical
+    receiver: critical-telegram
+  - match:
+      severity: high
+    receiver: high-telegram
 
 receivers:
 - name: 'null_receiver'
   email_configs: []
-- name: 'stardata-telegram'
+- name: 'high-telegram'
   telegram_configs:
-  - bot_token: "7546702272:AAHpMtCfB8WNmeoayYBaoRZgPAG9m2BAF4o"
+  - bot_token: ""
+    api_url: https://api.telegram.org
+    chat_id: -1002404898299
+    parse_mode: ''
+    http_config:
+      tls_config:
+        insecure_skip_verify: true
+- name: 'critical-telegram'
+  telegram_configs:
+  - bot_token: ""
     api_url: https://api.telegram.org
     chat_id: -1002404898299
     parse_mode: ''

@@ -1,7 +1,7 @@
 version: "3"
 services:
   prometheus:
-    image: bitnami/prometheus:2.55.1-debian-12-r2
+    image: prom/prometheus:v3.0.0
     volumes:
       - "./prometheus:/etc/prometheus"
     networks:
@@ -22,9 +22,23 @@ services:
       - localprom
     ports:
       - 8000:8000
+    env_file:
+      - .env
+  grafana:
+    image: grafana/grafana:latest
     environment:
-      - sleep_interval=${sleep_interval}
-      - always_allert=${always_allert}
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - localprom
+
 networks:
   localprom:
     driver: bridge
+
+volumes:
+  grafana-storage:
+    driver: local
